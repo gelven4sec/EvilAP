@@ -1,0 +1,4 @@
+if (ip.proto == TCP && ip.dst == 80) {
+    log(DATA.data, "./logfile.txt");
+    msg("bip");
+}
