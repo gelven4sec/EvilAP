@@ -100,10 +100,10 @@ for packet in data:
 
     if "http" in packet["_source"]["layers"]:
 
-        if "http.host" in packet["_source"]["layers"]["http"]:
+        if "http.request.full_uri" in packet["_source"]["layers"]["http"]:
 
             if "http.referer" not in  packet["_source"]["layers"]["http"]:
-                url = packet["_source"]["layers"]["http"]["http.host"]
+                url = packet["_source"]["layers"]["http"]["http.request.full_uri"]
                 ip = packet["_source"]["layers"]["ip"]["ip.src"]
 
                 print(f"'{ip}' visited '{url}'")
