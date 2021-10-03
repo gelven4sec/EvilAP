@@ -38,13 +38,13 @@ print("Creating config files...")
 f = open("/tmp/dnsmasq.conf", "w")
 f.write(f"\
 interface={sys.argv[2]}\n\
-dhcp-range=192.168.1.50,192.168.1.150,12h\n\
+dhcp-range=192.168.2.50,192.168.2.150,12h\n\
 dhcp-option=6,8.8.8.8\n\
-dhcp-option=3,192.168.1.1")
+dhcp-option=3,192.168.2.1")
 f.close()
 
 # Set AP ip address
-os.system(f"ip addr add 192.168.1.1/24 dev {sys.argv[2]}")
+os.system(f"ip addr add 192.168.2.1/24 dev {sys.argv[2]}")
 
 f = open("/tmp/hostapd.conf", "w")
 f.write(f"\
